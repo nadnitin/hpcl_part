@@ -270,7 +270,7 @@ document.getElementById('searchRoCode').addEventListener('input', filterComplain
 function back(){
 
 
-    window.location.href = '/home.html';
+    window.location.href = './home.html';
   }
 
 
