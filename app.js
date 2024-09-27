@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle form submission
     document.getElementById('complaint-form').addEventListener('submit', function(event) {
         event.preventDefault();
-
+        startLoader();
         // Generate Complaint ID
         generateComplaintId().then(complaintId => {
             // Get the current date and time in the desired format
@@ -75,10 +75,13 @@ document.addEventListener('DOMContentLoaded', function() {
             db.collection('complaints').add(complaintData)
                 .then(() => {
                     alert(`Complaint submitted successfully! Complaint ID: ${complaintId}`);
+                    stopLoader();
                     document.getElementById('complaint-form').reset();
+
                 })
                 .catch(error => {
                     console.error('Error adding complaint: ', error);
+                    stopLoader();
                 });
         });
     });
@@ -208,7 +211,7 @@ function getSitedetails() {
   function table(){
 
 
-    window.location.href = '/table.html';
+    window.location.href = './table.html';
   }
 
   function empty() {
@@ -238,7 +241,7 @@ function getSitedetails() {
   function logout()
 {
   
-    window.location = "index.html"; 
+    window.location = "./index.html"; 
 
     localStorage.setItem("name","logout");
     localStorage.setItem("state","");
