@@ -52,7 +52,7 @@ if (nitin == "secrate") {
 
   if (localStorage.getItem('name') === 'logout') {
     
-    window.location.href = 'index.html';
+    window.location.href = './index.html';
   } else {
     
     var sessionTimeout = setTimeout(function () {
@@ -77,7 +77,7 @@ if (nitin == "secrate") {
     localStorage.setItem("username","");
     localStorage.setItem("account_status","");;
         
-        window.location.href = 'index.html';
+        window.location.href = './index.html';
       }, 1800000); 
     });
   }
