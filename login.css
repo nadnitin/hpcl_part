@@ -1,0 +1,70 @@
+
+/* Custom Login CSS */
+body {
+    background-color: #f8f9fa;
+  }
+  
+  .container {
+    margin-top: 100px;
+  }
+  
+  .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .card-body {
+    padding: 30px;
+  }
+  
+  .form-control {
+    border-radius: 20px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 20px;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .card-footer {
+      background-color: #9e1313;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      padding: 20px;
+      text-align: center;
+      
+      text-transform: uppercase; /* Convert text to uppercase */
+      font-size: 15px;
+      font-weight: bold;
+      color: #f8f9fa;
+    }
+  
+  .loader {
+      display: none;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #96b0dd;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto; /* Center the loader horizontally */
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+  

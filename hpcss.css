@@ -1,0 +1,114 @@
+.container {
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #d6dfe2;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: solid black; 
+}
+
+.body{
+    background-color: rgb(245, 245, 229);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 50px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.form-group {
+    margin-bottom: 15px;
+   
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    margin-left: 50px;
+}
+
+input, textarea, select {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #2c2929;
+    border-radius: 4px;
+    margin-left: 50px;
+    
+}
+
+.submit {
+    display: block;
+    width: 20%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 40%;
+}
+
+.submit:hover {
+    background-color: #0056b3;
+}
+
+
+.table {
+    display: block;
+    width: 15%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 80%;
+}
+
+.table:hover {
+    background-color: #0056b3;
+}
+
+.logout {
+    display: block;
+    width: 10%;
+    padding: 12px;
+    background-color: #ec6b1b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 85%;
+}
+
+.logout:hover {
+    background-color: #0056b3;
+}
+
+
+/* CSS for loader */
+.loader {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* To make sure it's on top of other elements */
+
+  }
+  
+  /* Animation for spinning */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

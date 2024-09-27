@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="hpcss.css">
+    <title>Add Part</title>
+    
+</head>
+<body class="body" id="body" onload="loaddata()">
+    <button type="button" class="logout" id="logout-btn" onclick="logout()">Logout</button>
+    <div id="loader" class="loader" style="display: none;"></div>
+    <div class="container" id="container">
+        <h2>HPCL Part request</h2>
+        
+        <button type="button" class="table" id="Complaint-btn" onclick="table()">View Complaint</button>
+       
+
+
+        <form id="complaint-form">
+
+            
+            <!-- Complaint ID is auto-generated, not shown in the form -->
+            <div class="form-group" style="display:none;">
+                <input type="text" id="complaintId" readonly required>
+            </div>
+
+            <!-- Create Date will be auto-filled -->
+            <div class="form-group" style="display:none;">
+                <input type="text" id="createDate" readonly required>
+            </div>
+
+            <div class="form-group">
+                <label for="roCode">RO Code:</label>
+                <input type="number" id="roCode" onblur="getSitedetails(),empty()" onclick="Resetname()" placeholder="Enter RO Code" required>
+            </div>
+            <div class="form-group">
+                <label for="roName">RO Name:</label>
+                <input type="text" id="roName" placeholder="Enter RO Name" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="soName">SO Name:</label>
+                <input type="text" id="soName" placeholder="Enter SO Name" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="riginalName">Regional Office:</label>
+                <input type="text" id="riginalName" placeholder="Enter Regional Office" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="engName">Engineer Name:</label>
+                <input type="text" id="engName" placeholder="Enter Engineer Name" required>
+            </div>
+            <div class="form-group">
+                <label for="issue">Issue:</label>
+                <input id="issue" placeholder="Describe the issue" required></input>
+            </div>
+
+            <!-- Status is hidden and defaulted to "Open" -->
+            <input type="hidden" id="status" value="Open">
+
+            <div class="form-group">
+                <label for="partName">Part:</label>
+                <select id="partName" required >
+                    <option value="">Select Part</option>
+                    <option value="Motherboard">Motherboard</option>
+                    <option value="4GB RAM">4GB RAM</option>
+                    <option value="Highspeed RS485 card">Highspeed RS485 card</option>
+                    <option value="RS232 Expantion Board">RS232 Expantion Board</option>
+                    <option value="MSATA SLC 32GB">MSATA SLC 32GB</option>
+                    <option value="DCON">DCON</option>
+                    <option value="BATTERY">BATTERY</option>
+                    <option value="230VAC to 12V With Battery SMPS">230V to 12V With Battery SMPS</option>
+                    <option value="230VAC To 48V DC SMPS">230VAC To 48V DC SMPS</option>
+                    <option value="230VAC To 12V DC SMPS">230VAC To 12V DC SMPS</option>
+                    <option value="48VAC To 12VDC SMPS">48VAC To 12VDC SMPS</option>
+                    <option value="Flote Kit">Flote Kit</option>
+                    <option value="ATG Probe">ATG Probe</option>
+                    <option value="Brasif Card /zener barrier">Brasif Card /zener barrier</option>
+                    <option value="Monitor">Monitor</option>
+                    <option value="KeyBoard">KeyBoard</option>
+                    <option value="Mouse">Mouse</option>
+                    <option value="Printer Motor">Printer Motor</option>
+                    <option value="2 pair CABLE">2 pair CABLE</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="make">Make:</label>
+                <select id="make" required>
+                    <option value="">Select Make</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="size">Size:</label>
+                <select id="size" required>
+                    <option value="">Select Size</option>
+                </select>
+            </div>
+            
+
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" placeholder="Enter Quantity" required>
+            </div>
+            <div class="form-group">
+                <label for="faultyPartSerial">Faulty Part Serial Number:</label>
+                <input type="text" id="faultyPartSerial" placeholder="Enter Faulty Part Serial Number" required>
+            </div>
+
+            <button class="submit" type="submit" id="submit-btn">Submit request</button>
+
+            <div class="form-group" style="display:none;">
+                <input type="text" id="user" readonly required>
+            </div>
+        </form>
+    </div>
+
+    <script>
+
+        // Retrieve the value from localStorage
+        const username = localStorage.getItem('username');
+        
+        // Check if username exists in localStorage and set it to the input field
+        if (username) {
+          document.getElementById('user').value = username;
+        }
+     
+      </script>
+</body>
+</html>

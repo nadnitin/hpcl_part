@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View and Modify Complaints</title>
+    <link rel="stylesheet" href="table.css">
+ <!-- Firebase SDK (Version 8 for non-modular usage) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <!-- SheetJS Library for Excel Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+    <!-- Initialize Firebase -->
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyDshNbtBvPHO5y9ul6l5vzft8QH1RL6sUk",
+            authDomain: "hpcl-25bf8.firebaseapp.com",
+            projectId: "hpcl-25bf8",
+            storageBucket: "hpcl-25bf8.appspot.com",
+            messagingSenderId: "776035241101",
+            appId: "1:776035241101:web:3939dad26cab06c0baa6c4",
+            measurementId: "G-T29TFQG9WP"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+
+
+         // Retrieve the value from localStorage
+         function setuser() {
+            
+  var username = localStorage.getItem('username');
+
+  if (username) {
+    document.getElementById('user').value = username;
+   
+  }
+}
+    </script>
+</head>
+<body class="body" onload="setuser()">
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+    
+
+    <!-- Buttons for complaint categories -->
+    <button id="allcomplaint-btn">All Complaints</button>
+    <button id="open-btn">Open Complaints</button>
+    <button id="closed-btn">Closed Complaints</button>
+    <button id="rejected-btn">Rejected Complaints</button>
+    <button id="reopen-btn">Reopen Complaints</button> <!-- New Reopen Button -->    
+    <button type="button" id="Complaint-btn" onclick="back()"> Home</button>
+
+    <!-- Date range for downloading complaints -->
+     <div>
+    <label for="fromDate">From Date:</label>
+    <input type="date" id="fromDate">
+    <label for="toDate">To Date:</label>
+    <input type="date" id="toDate">
+    <button id="download-btn">Download Complaints</button>
+</div>
+    <div>
+        
+    </div>
+    <div>
+        <label for="searchComplaintId">Search by Complaint ID:</label>
+        <input type="text" id="searchComplaintId" placeholder="Enter Complaint ID">
+        
+        <label for="searchRoCode">Search by RO Code:</label>
+        <input type="number" id="searchRoCode" placeholder="Enter RO Code">
+    </div>
+    <!-- Complaints table -->
+    <table id="complaints-table">
+        <thead>
+            <tr>
+                <th>Complaint ID</th>
+                <th>Create Date</th>
+                <th>RO Code</th>
+                <th>RO Name</th>
+                <th>State</th>
+                <th>Regional Office</th>
+                <th>Engineer Name</th>
+                <th>Part</th>
+                <th>Modify Remark</th>
+                <th>Status</th>
+                <th>User</th>
+                <th>Last Modified Date</th>                
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Complaints will be dynamically loaded here -->
+        </tbody>
+    </table>
+   
+
+    <!-- Modal for modifying complaint status -->
+    <div id="modifyModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="modify-complaint-form">
+                
+                <div>
+                <label for="complaintId">Complaint ID:</label>
+                <input type="text" id="complaintId" readonly>
+                         </div>
+                    <div>   
+                <label for="roCode">RO Code:</label>
+                <input type="text" id="roCode" readonly>
+            </div>
+            <div>
+                <label for="roName">RO Name:</label>
+                <input type="text" id="roName" readonly>
+            </div>
+            <div>
+                <label for="soName">State:</label>
+                <input type="text" id="soName" readonly>
+            </div>
+                <div>
+                <label for="riginalName">Regional Office:</label>
+                <input type="text" id="riginalName" readonly>
+            </div>
+                <div>
+                <label for="engName">Engineer Name:</label>
+                <input type="text" id="engName" readonly>
+            </div>
+                    <div>
+                    <label for="status">Modify Status:</label>
+                    <select id="status" required>
+                        <option value="">Select Status</option>
+                        <option value="Closed">Closed</option>
+                        <option value="Reopen">Reopen</option>
+                        <option value="Reject">Reject</option>
+                    </select>
+                </div>
+               
+            <div>
+
+                <label for="remark">Remark:</label>
+                <textarea id="remark" placeholder="Enter Remark" required></textarea>
+    </div>
+    <div>
+                <button type="submit">Update Complaint</button>
+            </div>
+            <div class="form-group" style="display:none;"></div>
+                <input type="text" style="display:none;" id="user" readonly required> 
+            </div>
+            </form>
+        </div>
+    </div>
+    
+
+
+    <!-- JavaScript File -->
+    <script src="table.js"></script>
+</body>
+</html>
