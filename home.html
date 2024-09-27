@@ -129,6 +129,51 @@
           document.getElementById('user').value = username;
         }
      
+
+
+ var nitin = localStorage.getItem("name");
+
+
+if (nitin == "secrate") {
+
+} else {
+ ;
+  window.location.href = "index.html";
+}
+
+
+  if (localStorage.getItem('name') === 'logout') {
+    
+    window.location.href = 'index.html';
+  } else {
+    
+    var sessionTimeout = setTimeout(function () {
+      
+      localStorage.setItem("name","logout");
+    localStorage.setItem("state","");
+    localStorage.setItem("role","");
+    localStorage.setItem("username","");
+    localStorage.setItem("account_status","");
+      
+      window.location.href = 'index.html';
+    }, 1800000); 
+
+    // Reset session timeout on user activity
+    window.addEventListener('mousemove', function () {
+      clearTimeout(sessionTimeout);
+      sessionTimeout = setTimeout(function () {
+        
+        localStorage.setItem("name","logout");
+    localStorage.setItem("state","");
+    localStorage.setItem("role","");
+    localStorage.setItem("username","");
+    localStorage.setItem("account_status","");;
+        
+        window.location.href = 'index.html';
+      }, 1800000); 
+    });
+  }
+
       </script>
 </body>
 </html>
