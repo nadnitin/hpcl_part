@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 engName: document.getElementById('engName').value,
                 issue: document.getElementById('issue').value,
                 status: "Open",  // Set default status to "Open"
+                reqType: document.getElementById('reqType').value,
                 partName: document.getElementById('partName').value,
                 make: document.getElementById('make').value,
                 size: document.getElementById('size').value,
@@ -115,8 +116,19 @@ const partsData = {
     '230VAC To 12V DC SMPS': { makes: { 'Nutek/Span': ['FREE'] } },
     '48VAC To 12VDC SMPS': { makes: { 'Nutek/Span': ['FREE'] } },
     'Flote Kit': { makes: { 'SBEM': ['MS', 'HSD'], 'START': ['MS', 'HSD'],'SBEM DLI': ['MS', 'HSD'],'Veeder Root': ['MS', 'HSD'] } },
-    'ATG Probe': { makes: { 'SBEM': ['2Mtr', '2.25Mtr', '2.5Mtr', '3Mtr', '3.5Mtr'], 'SBEM DLI': ['2Mtr', '2.25Mtr', '2.5Mtr', '3Mtr', '3.5Mtr'], 'Start ItaliATOS': ['2Mtr', '2.25Mtr', '2.5Mtr', '3Mtr', '3.5Mtr'], 'Veeder Root': ['6Feet', '7Feet', '7.5Feet', '8Feet', '8.5Feet', '9Feet'] } },
-    'Brasif Card /zener barrier': { makes: { 'SBEM': ['FREE'], 'START': ['FREE'],'SBEM DLI': ['FREE'] } },
+    
+    'ATG Probe': { makes: { 'SBEM L MS': ['2Mtr', '2.25Mtr', '2.5Mtr', '3Mtr', '3.5Mtr'], 
+      'SBEM L HSD': ['2Mtr', '2.25Mtr', '2.5Mtr', '3Mtr', '3.5Mtr'],
+      'SBEM DLI MS': ['2Mtr', '2.25Mtr', '2.5Mtr', '3Mtr', '3.5Mtr'], 
+      'SBEM DLI HSD': ['2Mtr', '2.25Mtr', '2.5Mtr', '3Mtr', '3.5Mtr'],
+      'Start ItaliATOS MS': ['2Mtr', '2.25Mtr', '2.5Mtr', '3Mtr', '3.5Mtr'], 
+      'Start ItaliATOS HSD': ['2Mtr', '2.25Mtr', '2.5Mtr', '3Mtr', '3.5Mtr'],
+      'Veeder Root MS': ['6Feet', '7Feet', '7.5Feet', '8Feet', '8.5Feet', '9Feet'],
+      'Veeder Root HSD': ['6Feet', '7Feet', '7.5Feet', '8Feet', '8.5Feet', '9Feet']    
+    } },
+    
+    
+      'Brasif Card /zener barrier': { makes: { 'SBEM': ['FREE'], 'START': ['FREE'],'SBEM DLI': ['FREE'] } },
     'Monitor': { makes: { 'Zebronics': ['14"', '20"'] } },
     'KeyBoard': { makes: { 'Zebronics': ['FREE'] } },
     'Mouse': { makes: { 'Zebronics': ['FREE'] } },
