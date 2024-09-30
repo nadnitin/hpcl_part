@@ -27,6 +27,7 @@ function fetchComplaints(status) {
                     <td>${data.soName}</td>
                     <td>${data.riginalName}</td>
                     <td>${data.engName}</td>
+                    <td>${data.reqType}</td>
                     <td>${data.partName}</td>
                     <td>${data.remark || 'N/A'}</td>
                     <td>${data.status}</td>
@@ -63,6 +64,7 @@ function fetchAllComplaints() {
             <td>${data.soName}</td>
             <td>${data.riginalName}</td>
             <td>${data.engName}</td>
+            <td>${data.reqType}</td>
             <td>${data.partName}</td>
             <td>${data.remark || 'N/A'}</td>
             <td>${data.status}</td>
@@ -183,6 +185,7 @@ function exportToExcel(complaints) {
         'SO Name': complaint.soName,
         'Regional Office': complaint.riginalName,
         'Engineer Name': complaint.engName,
+        'Request type': complaint.reqType,
         issue: complaint.issue,
         status: complaint.status,
         'Part Name': complaint.partName,
