@@ -43,62 +43,96 @@ const firebaseConfig = {
 
 // Update the form submission function
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle form submission
-    document.getElementById('complaint-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        startLoader();
-        // Generate Complaint ID
-        generateComplaintId().then(complaintId => {
-            // Get the current date and time in the desired format
-            const currentDate = formatDate(new Date());
+  // Handle form submission
+  document.getElementById('complaint-form').addEventListener('submit', function(event) {
+      event.preventDefault();
 
-            // Collect form data
-            const complaintData = {
-                complaintId: complaintId,
-                createDate: currentDate,
-                roCode: document.getElementById('roCode').value,
-                roName: document.getElementById('roName').value,
-                soName: document.getElementById('soName').value,
-                riginalName: document.getElementById('riginalName').value,
-                engName: document.getElementById('engName').value,
-                issue: document.getElementById('issue').value,
-                status: "Open",  // Set default status to "Open"
-                reqType: document.getElementById('reqType').value,
-                partName: document.getElementById('partName').value,
-                make: document.getElementById('make').value,
-                size: document.getElementById('size').value,
-                quantity: document.getElementById('quantity').value,
-                faultyPartSerial: document.getElementById('faultyPartSerial').value,
-                username: document.getElementById('user').value
-            };
+      // Validate required fields
+      const requiredFields = ['roCode', 'roName', 'soName', 'riginalName', 'engName', 'issue', 'reqType', 'partName', 'make', 'size', 'quantity', 'faultyPartSerial', 'user'];
+      let isValid = true;
+      requiredFields.forEach(function(fieldId) {
+          const field = document.getElementById(fieldId);
+          if (field.value.trim() === '') {
+              field.style.border = '2px solid red';  // Highlight empty fields
+              isValid = false;
+          } else {
+              field.style.border = '';  // Reset border if field is not empty
+          }
+      });
 
-            // Add complaint to Firestore
-            db.collection('complaints').add(complaintData)
-                .then(() => {
-                    alert(`Complaint submitted successfully! Complaint ID: ${complaintId}`);
-                    stopLoader();
-                    document.getElementById('complaint-form').reset();
+      if (!isValid) {
+          alert('Please fill out all required fields.');
+          return;  // Prevent form submission
+      }
 
-                })
-                .catch(error => {
-                    console.error('Error adding complaint: ', error);
-                    stopLoader();
-                });
-        });
-    });
+      startLoader();
 
-    // Handle dependent dropdowns
-    document.getElementById('partName').addEventListener('change', function() {
-        const part = this.value;
-       
-        updateMakeOptions(part);
-    });
+      // Generate Complaint ID
+      generateComplaintId().then(complaintId => {
+          // Check for duplicate Complaint ID
+          db.collection('complaints').where('complaintId', '==', complaintId).get()
+          .then(querySnapshot => {
+              if (!querySnapshot.empty) {
+                  // Duplicate Complaint ID found
+                  alert(`Duplicate Complaint ID found. Please try again.`);
+                  stopLoader();
+              } else {
+                  // No duplicate found, proceed with submission
+                  const currentDate = formatDate(new Date());
 
-    document.getElementById('make').addEventListener('change', function() {
-        const make = this.value;
-        updateSizeOptions(make);
-    });
+                  // Collect form data
+                  const complaintData = {
+                      complaintId: complaintId,
+                      createDate: currentDate,
+                      roCode: document.getElementById('roCode').value,
+                      roName: document.getElementById('roName').value,
+                      soName: document.getElementById('soName').value,
+                      riginalName: document.getElementById('riginalName').value,
+                      engName: document.getElementById('engName').value,
+                      issue: document.getElementById('issue').value,
+                      status: "Open",  // Set default status to "Open"
+                      reqType: document.getElementById('reqType').value,
+                      partName: document.getElementById('partName').value,
+                      make: document.getElementById('make').value,
+                      size: document.getElementById('size').value,
+                      quantity: document.getElementById('quantity').value,
+                      faultyPartSerial: document.getElementById('faultyPartSerial').value,
+                      username: document.getElementById('user').value
+                  };
+
+                  // Add complaint to Firestore
+                  db.collection('complaints').add(complaintData)
+                      .then(() => {
+                          alert(`Complaint submitted successfully! Complaint ID: ${complaintId}`);
+                          stopLoader();
+                          document.getElementById('complaint-form').reset();
+                      })
+                      .catch(error => {
+                          console.error('Error adding complaint: ', error);
+                          stopLoader();
+                      });
+              }
+          })
+          .catch(error => {
+              console.error('Error checking for duplicate Complaint ID: ', error);
+              stopLoader();
+          });
+      });
+  });
+
+  // Handle dependent dropdowns
+  document.getElementById('partName').addEventListener('change', function() {
+      const part = this.value;
+      updateMakeOptions(part);
+  });
+
+  document.getElementById('make').addEventListener('change', function() {
+      const make = this.value;
+      updateSizeOptions(make);
+  });
 });
+
+
 
 //Dependend Dropdown Start
 
@@ -133,7 +167,9 @@ const partsData = {
     'KeyBoard': { makes: { 'Zebronics': ['FREE'] } },
     'Mouse': { makes: { 'Zebronics': ['FREE'] } },
     'Printer Motor': { makes: { 'APS': ['FREE'] } },
-    '2 pair CABLE': { makes: { 'ATOS': ['20Mtr'] } }
+    '2 pair CABLE': { makes: { 'ATOS': ['20Mtr'] } },
+    'TP Keypad': { makes: { 'ATOS': ['FREE'] } },
+    'TP Display': { makes: { 'ATOS': ['FREE'] } }
 };
 
 
