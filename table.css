@@ -242,3 +242,40 @@ button:hover {
     font-size: 27px;
     cursor: pointer;
 }
+
+/* Add your existing styles here */
+.status-counts {
+    border: 1px solid #000000; /* Border around the counts section */
+    padding: 5px; /* Padding around the section */
+}
+
+.status-row {
+    margin-bottom: 4px; /* Space between rows */
+}
+
+.status-header {
+    display: inline-block; /* Inline block for headers */
+    width: 100px; /* Set a fixed width for headers */
+    text-align: center; /* Center text */
+    font-weight: bold; /* Bold text for headers */
+    border-bottom: 1px solid #0b0808; /* Bottom border for headers */
+    padding: 2px 0; /* Padding for header */
+}
+
+.status-count {
+    display: inline-block; /* Inline block for counts */
+    width: 100px; /* Set a fixed width for counts */
+    text-align: center; /* Center text */
+    padding: 5px 0; /* Padding for counts */
+    border: 1px solid #070505; /* Border around each count */
+}
+
+.closed {
+    background-color: green; /* Green background for Closed status */
+    color: black; /* Black text color */
+}
+
+.open {
+    background-color: rgb(230, 204, 34); /* Yellow background for Open status */
+    color: black; /* Black text color */
+}
