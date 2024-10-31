@@ -74,21 +74,21 @@ function fetchAllComplaints() {
         </tr>
             `;
             tableBody.innerHTML += row;
-            hideLoader(); 
+            hideLoader();
         });
     }).catch(error => {
-        hideLoader(); 
+        hideLoader();
         console.error('Error fetching all complaints: ', error);
     });
 }
 
 // Open modal for modifying complaint
-function openModifyModal(docId, complaintId, roCode, roName, soName, riginalName, engName ) {
+function openModifyModal(docId, complaintId, roCode, roName, soName, riginalName, engName) {
     const modal = document.getElementById('modifyModal');
     const username = document.getElementById('user').value;
-    
+
     modal.style.display = 'block';
-  
+
     // Populate form fields with complaint data
     document.getElementById('complaintId').value = complaintId;
     document.getElementById('roCode').value = roCode;
@@ -96,83 +96,117 @@ function openModifyModal(docId, complaintId, roCode, roName, soName, riginalName
     document.getElementById('soName').value = soName;
     document.getElementById('riginalName').value = riginalName;
     document.getElementById('engName').value = engName;
-    document.getElementById('user').value = username;    
+    document.getElementById('user').value = username;
     // Handle form submission for modifying complaint status with formatted lastModifiedDate
-    document.getElementById('modify-complaint-form').onsubmit = function(event) {
-      event.preventDefault();   
-      showLoader();
-      const newStatus = document.getElementById('status').value;
-      const remark = document.getElementById('remark').value;
-      const username = document.getElementById('user').value;
-  
-      const formattedDate = formatDate(new Date()); // Use formatDate function for desired format
-  
-      // Update complaint in Firestore with formatted lastModifiedDate
-      db.collection('complaints').doc(docId).update({
-        status: newStatus,
-        remark: remark,
-        username: username,
-        lastModifiedDate: formattedDate
-      }).then(() => {
-        alert('Complaint modified successfully!');
-        hideLoader();
-        modal.style.display = 'none';
-        fetchComplaints(newStatus); // Refresh complaints view
-      }).catch(error => {
-        console.error('Error modifying complaint: ', error);
-        hideLoader();
-      });
+    document.getElementById('modify-complaint-form').onsubmit = function (event) {
+        event.preventDefault();
+        showLoader();
+        const newStatus = document.getElementById('status').value;
+        const remark = document.getElementById('remark').value;
+        const username = document.getElementById('user').value;
+
+        const formattedDate = formatDate(new Date()); // Use formatDate function for desired format
+
+        // Update complaint in Firestore with formatted lastModifiedDate
+        db.collection('complaints').doc(docId).update({
+            status: newStatus,
+            remark: remark,
+            username: username,
+            lastModifiedDate: formattedDate
+        }).then(() => {
+            alert('Complaint modified successfully!');
+            hideLoader();
+            modal.style.display = 'none';
+            fetchComplaints(newStatus); // Refresh complaints view
+        }).catch(error => {
+            console.error('Error modifying complaint: ', error);
+            hideLoader();
+        });
     };
-  }
-  
-  // Improved formatDate function (assuming you want DD-MM-YYYY HH:MM:SS)
-  function formatDate(date) {
+}
+
+// Improved formatDate function (assuming you want DD-MM-YYYY HH:MM:SS)
+function formatDate(date) {
     const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2,   
-   '0'); // Months are zero-based
+    const month = String(date.getMonth() + 1).padStart(2,
+        '0'); // Months are zero-based
     const year = date.getFullYear();
     const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2,   
-   '0');
+    const minutes = String(date.getMinutes()).padStart(2,
+        '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-  
-    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;   
-  
-  }
+
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+
+}
 
 // Close modal on clicking close button
-document.querySelector('.close').onclick = function() {
+document.querySelector('.close').onclick = function () {
     document.getElementById('modifyModal').style.display = 'none';
 };
 
-// Download complaints based on date range or all data
-function downloadComplaints() {
-    showLoader();
-    const fromDate = document.getElementById('fromDate').value;
-    const toDate = document.getElementById('toDate').value;
 
-    let query = db.collection('complaints');
-    if (fromDate) {
-        query = query.where('createDate', '>=', new Date(fromDate));
+// Function to format date from YYYY-MM-DDTHH:mm to DD-MM-YYYY HH:MM:SS
+function formatDateString(dateString, time) {
+    const dateParts = dateString.split('T')[0].split('-'); // Split date by 'T' and then by '-'
+    const hoursMinutes = time ? time.split(':') : ['00', '00']; // Get hours and minutes, default to '00:00' if not provided
+    if (dateParts.length !== 3) {
+        throw new Error('Invalid date format. Please enter dates in YYYY-MM-DD format.');
     }
-    if (toDate) {
-        query = query.where('createDate', '<=', new Date(toDate));
-    }
-
-    query.get().then(snapshot => {
-        const complaints = [];
-        snapshot.forEach(doc => {
-            complaints.push(doc.data());
-        });
-        // Convert complaints data to Excel
-        exportToExcel(complaints);
-    }).catch(error => {
-        console.error('Error downloading complaints: ', error);
-        hideLoader();
-    });
+    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]} ${hoursMinutes[0]}:${hoursMinutes[1]}:00`; // Return in DD-MM-YYYY HH:MM:SS format
 }
 
-// Export complaints to Excel using SheetJS (xlsx library)
+// Download complaints based on the selected date range
+function downloadComplaints() {
+    showLoader();
+    const fromDateInput = document.getElementById('fromDate').value; // Get fromDate input
+    const toDateInput = document.getElementById('toDate').value; // Get toDate input
+
+    // Log the original fromDate and toDate for debugging
+    console.log('fromDate:', fromDateInput);
+    console.log('toDate:', toDateInput);
+
+    try {
+        // Initialize the query
+        let query = db.collection('complaints');
+
+        // Check if both dates are provided
+        if (fromDateInput && toDateInput) {
+            // Convert the input date strings to the desired format
+            const formattedFromDateTime = formatDateString(fromDateInput, '00:00'); // Use '00:00' for start of the day
+            const formattedToDateTime = formatDateString(toDateInput, '23:59'); // Use '23:59' for end of the day
+
+            // Log the formatted date-time strings for debugging
+            console.log('Formatted fromDateTime:', formattedFromDateTime);
+            console.log('Formatted toDateTime:', formattedToDateTime);
+
+            // Query to fetch data between fromDate and toDate
+            query = query.where('createDate', '>=', formattedFromDateTime)
+                .where('createDate', '<=', formattedToDateTime);
+        } else {
+            console.log('No dates selected. Fetching all complaints.'); // Log that all complaints are being fetched
+        }
+
+        // Execute the query
+        query.get().then(snapshot => {
+            const complaints = [];
+            snapshot.forEach(doc => {
+                complaints.push(doc.data());
+            });
+            // Convert complaints data to Excel
+            exportToExcel(complaints);
+            hideLoader(); // Hide loader after data is fetched
+        }).catch(error => {
+            console.error('Error downloading complaints: ', error);
+            hideLoader(); // Ensure loader is hidden on error
+        });
+    } catch (error) {
+        console.error('Error:', error.message);
+        hideLoader(); // Ensure loader is hidden on error
+    }
+}
+
+
 // Export complaints to Excel using SheetJS (xlsx library)
 function exportToExcel(complaints) {
     hideLoader();
@@ -194,8 +228,8 @@ function exportToExcel(complaints) {
         quantity: complaint.quantity,
         'Faulty Part Serial': complaint.faultyPartSerial,
         'Last Modified Date': complaint.lastModifiedDate || 'N/A',  // Include the lastModifiedDate
-        'Last Modified Remark': complaint.remark  || 'N/A', 
-        'User': complaint.username, 
+        'Last Modified Remark': complaint.remark || 'N/A',
+        'User': complaint.username,
     }));
 
     // Create worksheet with the updated header names and data
@@ -209,27 +243,27 @@ function exportToExcel(complaints) {
 
 
 // Event listeners for buttons
-document.getElementById('open-btn').addEventListener('click', function() {
+document.getElementById('open-btn').addEventListener('click', function () {
     fetchComplaints('Open');
 });
 
-document.getElementById('closed-btn').addEventListener('click', function() {
+document.getElementById('closed-btn').addEventListener('click', function () {
     fetchComplaints('Closed');
 });
 
-document.getElementById('rejected-btn').addEventListener('click', function() {
+document.getElementById('rejected-btn').addEventListener('click', function () {
     fetchComplaints('Reject');
 });
 
-document.getElementById('reopen-btn').addEventListener('click', function() {
+document.getElementById('reopen-btn').addEventListener('click', function () {
     fetchComplaints('Reopen');
 });
 
-document.getElementById('allcomplaint-btn').addEventListener('click', function() {
+document.getElementById('allcomplaint-btn').addEventListener('click', function () {
     fetchAllComplaints();
 });
 
-document.getElementById('download-btn').addEventListener('click', function() {
+document.getElementById('download-btn').addEventListener('click', function () {
     downloadComplaints();
 });
 
@@ -270,14 +304,14 @@ document.getElementById('searchComplaintId').addEventListener('input', filterCom
 document.getElementById('searchRoCode').addEventListener('input', filterComplaints);
 
 
-function back(){
+function back() {
 
 
     window.location.href = './home.html';
-  }
+}
 
 
-  var userRole = localStorage.getItem("role");
+var userRole = localStorage.getItem("role");
 
 // Check if the role is "FE"
 // if (userRole === "admin") {
@@ -291,4 +325,38 @@ function back(){
 //     // Do nothing (keep all options)
 //   }
 
- 
+
+// Function to fetch counts of complaints by status
+function fetchStatusCounts() {
+    const statuses = ['Open', 'Closed', 'Reopen', 'Reject'];
+    const statusCounts = {};
+
+    showLoader(); // Show loader while fetching data
+
+    const promises = statuses.map(status => {
+        return db.collection('complaints').where('status', '==', status).get().then(snapshot => {
+            statusCounts[status] = snapshot.size; // Store the count of each status
+        });
+    });
+
+    Promise.all(promises)
+        .then(() => {
+            // Update the HTML with the fetched counts
+            document.getElementById('count-open').textContent = statusCounts['Open'] || 0;
+            document.getElementById('count-closed').textContent = statusCounts['Closed'] || 0;
+            document.getElementById('count-reopen').textContent = statusCounts['Reopen'] || 0;
+            document.getElementById('count-reject').textContent = statusCounts['Reject'] || 0;
+            hideLoader(); // Hide loader after fetching data
+        })
+        .catch(error => {
+            console.error('Error fetching status counts: ', error);
+            hideLoader(); // Ensure loader is hidden on error
+        });
+}
+
+
+// Call fetchStatusCounts when the page loads
+function onload (){
+    setuser();
+    fetchStatusCounts(); // Fetch and display status counts
+};
