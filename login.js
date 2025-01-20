@@ -1,30 +1,32 @@
 
+
+
+
+
+
 async function validate() {
-  var username = document.getElementById("username").value;
-  var password = document.getElementById("password").value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
   activateLoader();
 
   try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbxsBreQO2Ct2LMKi4Vl57JG2rnVZEyW3Qq3uXtMTygZ8E68q3gWI_vy-dS2L0KxTaFc_A/exec?action=getData');
-
-      if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
+      // Fetch user data (use caching to avoid repeated requests)
+      const data = await fetchUserData();
 
       const userdata = data?.content;
-     //console.log(userdata);
+      console.log(userdata);
+
       if (userdata && userdata.length > 0) {
-          const foundUser = userdata.find(user => user[0] === username && user[1] === b64EncodeUnicode(password));
+          const foundUser = userdata.find(
+              user => user[0] === username && user[1] === b64EncodeUnicode(password)
+          );
 
           if (foundUser) {
               localStorage.setItem("username", username);
               localStorage.setItem("name", "secrate");
               localStorage.setItem("role", foundUser[2]);
               localStorage.setItem("state", foundUser[4]);
-              localStorage.setItem("username", foundUser[0]);
               localStorage.setItem("account_status", foundUser[3]);
 
               if (foundUser[3] === "active") {
@@ -37,13 +39,42 @@ async function validate() {
               deactivateLoader();
               alert("Incorrect username or password. Please try again.");
           }
+      } else {
+          deactivateLoader();
+          alert("No user data found.");
       }
   } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error validating user:", error);
       deactivateLoader();
-      alert("Error.");
+      alert("An error occurred while logging in. Please try again.");
   }
-}  
+}
+
+// Fetch user data from the server (with caching)
+async function fetchUserData() {
+  if (!sessionStorage.getItem("userData")) {
+      const response = await fetch(
+          `https://script.google.com/macros/s/AKfycbxsBreQO2Ct2LMKi4Vl57JG2rnVZEyW3Qq3uXtMTygZ8E68q3gWI_vy-dS2L0KxTaFc_A/exec?action=getData&nocache=${Date.now()}`
+      );
+      
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.error) {
+          throw new Error(data.error);
+      }
+
+      // Cache the data in sessionStorage
+      sessionStorage.setItem("userData", JSON.stringify(data));
+  }
+
+  return JSON.parse(sessionStorage.getItem("userData"));
+}
+
+
+  
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -54,6 +85,8 @@ document.addEventListener("DOMContentLoaded", function () {
       login();
   });
 });
+
+
 
 function login() {
   var username = document.getElementById("username").value;
@@ -67,6 +100,10 @@ function login() {
     validate();
   }
 }
+
+
+
+
 
 
 // Function to encode string to Base64
