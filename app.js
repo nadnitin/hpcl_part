@@ -1,11 +1,21 @@
 const firebaseConfig = {
-   apiKey: "AIzaSyB3ZSzMvPZ2AZqsGc1G9-t5LIfios2Agt8",
-            authDomain: "hpcl-complaints.firebaseapp.com",
-            projectId: "hpcl-complaints",
-            storageBucket: "hpcl-complaints.firebasestorage.app",
-            messagingSenderId: "1035793169327",
-            appId: "1:1035793169327:web:89c51630638494237a8d5a",
-            measurementId: "G-WGENWQKZ9S"
+            //  apiKey: "AIzaSyB3ZSzMvPZ2AZqsGc1G9-t5LIfios2Agt8",
+            // authDomain: "hpcl-complaints.firebaseapp.com",
+            // projectId: "hpcl-complaints",
+            // storageBucket: "hpcl-complaints.firebasestorage.app",
+            // messagingSenderId: "1035793169327",
+            // appId: "1:1035793169327:web:89c51630638494237a8d5a",
+            // measurementId: "G-WGENWQKZ9S"
+           
+            apiKey: "AIzaSyDxe0zGdGjM1tdj_kRUHknvOL8Hv1r8MmQ",
+            authDomain: "hpcl-test-4b616.firebaseapp.com",
+            projectId: "hpcl-test-4b616",
+            storageBucket: "hpcl-test-4b616.firebasestorage.app",
+            messagingSenderId: "691353215702",
+            appId: "1:691353215702:web:8111f5b26387902050df77",
+            measurementId: "G-4MC730JNEM"
+            
+          
   };
   
   firebase.initializeApp(firebaseConfig);
@@ -48,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
       event.preventDefault();
 
       // Validate required fields
-      const requiredFields = ['roCode', 'roName', 'soName', 'riginalName', 'engName', 'issue', 'reqType', 'partName', 'make', 'size', 'quantity', 'faultyPartSerial', 'user'];
+      const requiredFields = ['roCode', 'roName', 'soName', 'riginalName', 'engName', 'issue', 'reqType', 'partName', 'make', 'size', 'quantity', 'faultyPartSerial', 'user','recipient_name','recipient_number','recipient_address','recipient_pin'];
       let isValid = true;
       requiredFields.forEach(function(fieldId) {
           const field = document.getElementById(fieldId);
@@ -97,7 +107,11 @@ document.addEventListener('DOMContentLoaded', function() {
                       size: document.getElementById('size').value,
                       quantity: document.getElementById('quantity').value,
                       faultyPartSerial: document.getElementById('faultyPartSerial').value,
-                      username: document.getElementById('user').value
+                      username: document.getElementById('user').value,
+                      recipient_name: document.getElementById('recipient_name').value,
+                      recipient_number: document.getElementById('recipient_number').value,
+                      recipient_address: document.getElementById('recipient_address').value,
+                      recipient_pin: document.getElementById('recipient_pin').value
                   };
 
                   // Add complaint to Firestore
