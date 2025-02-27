@@ -1,7 +1,7 @@
 // Function to fetch complaints by specific status
 function fetchComplaints(status) {
     showLoader();
-    db.collection('complaints').where('status', '==', status).get().then(snapshot => {
+    db.collection('complaints').where('status', '==', status).orderBy('complaintId', 'desc').get().then(snapshot => {
         const tableBody = document.querySelector('#complaints-table tbody');
         tableBody.innerHTML = ''; // Clear table content
 
@@ -49,7 +49,7 @@ function fetchComplaints(status) {
 
 // Function to fetch all complaints regardless of status
 function fetchAllComplaints() {
-    db.collection('complaints').get().then(snapshot => {
+    db.collection('complaints').orderBy('complaintId', 'desc').get().then(snapshot => {
         showLoader();
         const tableBody = document.querySelector('#complaints-table tbody');
         tableBody.innerHTML = ''; // Clear table content
