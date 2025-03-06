@@ -7,13 +7,13 @@ const firebaseConfig = {
             // appId: "1:1035793169327:web:89c51630638494237a8d5a",
             // measurementId: "G-WGENWQKZ9S"
            
-            apiKey: "AIzaSyDxe0zGdGjM1tdj_kRUHknvOL8Hv1r8MmQ",
-            authDomain: "hpcl-test-4b616.firebaseapp.com",
-            projectId: "hpcl-test-4b616",
-            storageBucket: "hpcl-test-4b616.firebasestorage.app",
-            messagingSenderId: "691353215702",
-            appId: "1:691353215702:web:8111f5b26387902050df77",
-            measurementId: "G-4MC730JNEM"
+            // apiKey: "AIzaSyDxe0zGdGjM1tdj_kRUHknvOL8Hv1r8MmQ",
+            // authDomain: "hpcl-test-4b616.firebaseapp.com",
+            // projectId: "hpcl-test-4b616",
+            // storageBucket: "hpcl-test-4b616.firebasestorage.app",
+            // messagingSenderId: "691353215702",
+            // appId: "1:691353215702:web:8111f5b26387902050df77",
+            // measurementId: "G-4MC730JNEM"
             
           
   };
