@@ -1,11 +1,11 @@
 const firebaseConfig = {
-            //  apiKey: "AIzaSyB3ZSzMvPZ2AZqsGc1G9-t5LIfios2Agt8",
-            // authDomain: "hpcl-complaints.firebaseapp.com",
-            // projectId: "hpcl-complaints",
-            // storageBucket: "hpcl-complaints.firebasestorage.app",
-            // messagingSenderId: "1035793169327",
-            // appId: "1:1035793169327:web:89c51630638494237a8d5a",
-            // measurementId: "G-WGENWQKZ9S"
+             apiKey: "AIzaSyB3ZSzMvPZ2AZqsGc1G9-t5LIfios2Agt8",
+            authDomain: "hpcl-complaints.firebaseapp.com",
+            projectId: "hpcl-complaints",
+            storageBucket: "hpcl-complaints.firebasestorage.app",
+            messagingSenderId: "1035793169327",
+            appId: "1:1035793169327:web:89c51630638494237a8d5a",
+            measurementId: "G-WGENWQKZ9S"
            
             // apiKey: "AIzaSyDxe0zGdGjM1tdj_kRUHknvOL8Hv1r8MmQ",
             // authDomain: "hpcl-test-4b616.firebaseapp.com",
