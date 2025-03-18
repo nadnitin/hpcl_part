@@ -227,7 +227,8 @@ function exportToExcel(complaints) {
         size: complaint.size,
         quantity: complaint.quantity,
         'Faulty Part Serial': complaint.faultyPartSerial,
-        'Last Modified Date': complaint.lastModifiedDate || 'N/A',  // Include the lastModifiedDate
+        'Last Modified Date': complaint.lastModifiedDate || 'N/A',
+        'Last Modified Remark': complaint.remark || 'N/A',
         'Recipient Name': complaint.recipient_name || 'N/A',
         'Recipient Number': complaint.recipient_number || 'N/A',
         'Recipient Address': complaint.recipient_address || 'N/A',
